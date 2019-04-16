@@ -7,6 +7,15 @@ import java.util.Optional;
 
 public class PostgresUserRepository implements UserRepository {
 
+    PostgresConnector connector;
+    public PostgresUserRepository() {
+        connector = new PostgresConnector();
+    }
+
+    public PostgresUserRepository(PostgresConnector connector) {
+        this.connector = connector;
+    }
+
     @Override
     public Optional<User> find(String name) {
         return Optional.empty();
@@ -14,7 +23,6 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        PostgresConnector connector = new PostgresConnector();
         connector.create(user.name());
     }
 }

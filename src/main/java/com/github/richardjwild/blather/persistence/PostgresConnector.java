@@ -7,8 +7,17 @@ import org.hibernate.cfg.Configuration;
 
 public class PostgresConnector {
 
+    SessionFactory sessionFactory;
+
+    public PostgresConnector() {
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+    }
+
+    public PostgresConnector(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     public void create(String name){
-        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();

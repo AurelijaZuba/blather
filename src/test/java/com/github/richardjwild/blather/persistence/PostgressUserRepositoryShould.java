@@ -3,6 +3,7 @@ package com.github.richardjwild.blather.persistence;
 import com.github.richardjwild.blather.user.User;
 import com.github.richardjwild.blather.user.UserRepository;
 import org.flywaydb.core.Flyway;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +20,13 @@ public class PostgressUserRepositoryShould {
     Flyway flyway = Flyway.configure().dataSource(testDatabaseUrl, testUser, password).load();
 
     private UserRepository userRepository;
+    private SessionFactory session;
 
     @Before
     public void setUp() throws Exception {
         flyway.migrate();
-        userRepository = new PostgresUserRepository();
+        PostgresConnector connector = new PostgresConnector(session);
+        userRepository = new PostgresUserRepository(connector);
     }
 
     @After
@@ -62,5 +65,9 @@ public class PostgressUserRepositoryShould {
         Optional<User> actualUser = userRepository.find(userName);
         assertThat(actualUser.get()).isSameAs(user);
         assertThat(actualUser.get()).isNotSameAs(userWithSameName);
+    }
+
+    private void setSession(){
+        this.session = session;
     }
 }
