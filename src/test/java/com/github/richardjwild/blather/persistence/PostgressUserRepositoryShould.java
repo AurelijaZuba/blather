@@ -1,9 +1,11 @@
 package com.github.richardjwild.blather.persistence;
 
 import com.github.richardjwild.blather.user.User;
+import com.github.richardjwild.blather.user.UserModel;
 import com.github.richardjwild.blather.user.UserRepository;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +22,13 @@ public class PostgressUserRepositoryShould {
     Flyway flyway = Flyway.configure().dataSource(testDatabaseUrl, testUser, password).load();
 
     private UserRepository userRepository;
-    private SessionFactory session;
+    private SessionFactory sessionFactory;
 
     @Before
     public void setUp() throws Exception {
         flyway.migrate();
-        PostgresConnector connector = new PostgresConnector(session);
+        setSession();
+        PostgresConnector connector = new PostgresConnector(sessionFactory);
         userRepository = new PostgresUserRepository(connector);
     }
 
@@ -68,6 +71,15 @@ public class PostgressUserRepositoryShould {
     }
 
     private void setSession(){
-        this.session = session;
+        Configuration configuration = new Configuration();
+        configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
+        configuration.setProperty("hibernate.connection.url", testDatabaseUrl);
+        configuration.setProperty("hibernate.connection.username", testUser);
+        configuration.setProperty("hibernate.connection.password", password);
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        configuration.setProperty("show_sql", "true");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        configuration.addAnnotatedClass(UserModel.class);
+        this.sessionFactory = configuration.buildSessionFactory();
     }
 }
