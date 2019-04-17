@@ -67,7 +67,7 @@ public class PostgressUserRepositoryShould {
         userRepository.save(userWithSameName);
 
         Optional<User> actualUser = userRepository.find(userName);
-        assertThat(actualUser.get()).isSameAs(user);
+        assertThat(actualUser.get()).isEqualTo(user);
         assertThat(actualUser.get()).isNotSameAs(userWithSameName);
     }
 

@@ -30,7 +30,11 @@ public class PostgresConnector {
         UserModel userModel = new UserModel();
         userModel.setName(name);
 
-        session.save(userModel);
+        UserModel existingUser = this.read(name);
+        if(existingUser == null) {
+            session.save(userModel);
+        }
+
         session.getTransaction().commit();
         session.close();
     }
