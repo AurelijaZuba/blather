@@ -18,11 +18,18 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public Optional<User> find(String name) {
+
+        User results = connector.read(name);
+        if(results != null)
+        {
+            return Optional.of(results);
+        }
         return Optional.empty();
     }
 
     @Override
     public void save(User user) {
+
         connector.create(user.name());
     }
 }
