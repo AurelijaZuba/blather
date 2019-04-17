@@ -35,21 +35,20 @@ public class PostgresConnector {
         session.close();
     }
 
-    public User read(String name) {
+    public UserModel read(String name) {
         Session session = sessionFactory.openSession();
 
         String sql = "FROM UserModel";
         Query query = session.createQuery(sql);
-        List result = query.list();
-        System.out.println(result);
+        List foundUsers = query.list();
 
-        for (Object user : result)
-        {
-            System.out.println(user);
-        }
+        UserModel result = null;
+
+        if(foundUsers.size() == 1)
+            result = (UserModel) foundUsers.get(0);
 
         session.close();
 
-        return null;
+        return result;
     }
 }

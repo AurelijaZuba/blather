@@ -1,6 +1,7 @@
 package com.github.richardjwild.blather.persistence;
 
 import com.github.richardjwild.blather.user.User;
+import com.github.richardjwild.blather.user.UserModel;
 import com.github.richardjwild.blather.user.UserRepository;
 
 import java.util.Optional;
@@ -19,10 +20,11 @@ public class PostgresUserRepository implements UserRepository {
     @Override
     public Optional<User> find(String name) {
 
-        User results = connector.read(name);
+        UserModel results = connector.read(name);
         if(results != null)
         {
-            return Optional.of(results);
+            User foundUser = new User(results.getName());
+            return Optional.of(foundUser);
         }
         return Optional.empty();
     }
