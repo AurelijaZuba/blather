@@ -15,7 +15,9 @@ public class PostgresConnector {
     SessionFactory sessionFactory;
 
     public PostgresConnector() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
+        sessionFactory = new Configuration()
+                .configure()
+                .buildSessionFactory();
     }
 
     public PostgresConnector(SessionFactory sessionFactory) {
@@ -30,8 +32,7 @@ public class PostgresConnector {
         UserModel userModel = new UserModel();
         userModel.setName(name);
 
-        UserModel existingUser = this.read(name);
-        if(existingUser == null) {
+        if(isExisting(name)) {
             session.save(userModel);
         }
 
@@ -39,15 +40,17 @@ public class PostgresConnector {
         session.close();
     }
 
+    private boolean isExisting(String username) {
+        UserModel userModel = this.read(username);
+        return userModel == null;
+    }
+
     public UserModel read(String name) {
+        UserModel result = null;
         Session session = sessionFactory.openSession();
 
-        String sql = "FROM UserModel U WHERE U.name = :name";
-        Query query = session.createQuery(sql)
-                .setParameter("name", name);
+        Query query = generateFindUserQuery(name, session);
         List foundUsers = query.list();
-
-        UserModel result = null;
 
         if(foundUsers.size() == 1)
             result = (UserModel) foundUsers.get(0);
@@ -55,5 +58,11 @@ public class PostgresConnector {
         session.close();
 
         return result;
+    }
+
+    private Query generateFindUserQuery(String name, Session session) {
+        String sql = "FROM UserModel U WHERE U.name = :name";
+        return session.createQuery(sql)
+                .setParameter("name", name);
     }
 }

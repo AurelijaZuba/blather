@@ -19,7 +19,6 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public Optional<User> find(String name) {
-
         UserModel results = connector.read(name);
         if(results != null)
         {
@@ -31,7 +30,7 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-
         connector.create(user.name());
+
     }
 }
