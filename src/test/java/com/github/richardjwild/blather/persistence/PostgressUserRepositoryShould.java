@@ -19,7 +19,7 @@ public class PostgressUserRepositoryShould {
     String testDatabaseUrl = "jdbc:postgresql://localhost:5432/test";
     String testUser = "testuser";
     String password = "testPassword123";
-    Flyway flyway = Flyway.configure().dataSource("jdbc:postgresql://localhost:5432/", "postgres", "database123").load();
+    Flyway flyway = Flyway.configure().dataSource(testDatabaseUrl, testUser, password).load();
 
     private UserRepository userRepository;
     private SessionFactory sessionFactory;
@@ -36,6 +36,7 @@ public class PostgressUserRepositoryShould {
     public void tearDown() throws Exception {
         flyway.clean();
     }
+
 
     @Test
     public void return_empty_when_user_not_found() {

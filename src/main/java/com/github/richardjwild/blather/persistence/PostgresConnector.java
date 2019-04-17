@@ -5,10 +5,8 @@ import com.github.richardjwild.blather.user.UserModel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.hibernate.query.Query;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,13 +37,10 @@ public class PostgresConnector {
 
     public User read(String name) {
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
 
-        String sql = "SELECT * FROM public.\"UserModel\" WHERE \"UserModel\".\"Name\" = \'" + name + "\'";
-        Query getUser = session.createSQLQuery(sql);
-
-        List result = getUser.list();
-
+        String sql = "FROM UserModel";
+        Query query = session.createQuery(sql);
+        List result = query.list();
         System.out.println(result);
 
         for (Object user : result)
@@ -53,7 +48,6 @@ public class PostgresConnector {
             System.out.println(user);
         }
 
-        session.getTransaction().commit();
         session.close();
 
         return null;
