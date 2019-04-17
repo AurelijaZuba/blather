@@ -42,8 +42,9 @@ public class PostgresConnector {
     public UserModel read(String name) {
         Session session = sessionFactory.openSession();
 
-        String sql = "FROM UserModel";
-        Query query = session.createQuery(sql);
+        String sql = "FROM UserModel U WHERE U.name = :name";
+        Query query = session.createQuery(sql)
+                .setParameter("name", name);
         List foundUsers = query.list();
 
         UserModel result = null;
