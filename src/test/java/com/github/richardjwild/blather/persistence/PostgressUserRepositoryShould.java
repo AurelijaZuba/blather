@@ -19,7 +19,7 @@ public class PostgressUserRepositoryShould {
     String testDatabaseUrl = "jdbc:postgresql://localhost:5432/test";
     String testUser = "testuser";
     String password = "testPassword123";
-    Flyway flyway = Flyway.configure().dataSource(testDatabaseUrl, testUser, password).load();
+    Flyway flyway = Flyway.configure().dataSource("jdbc:postgresql://localhost:5432/", "postgres", "database123").load();
 
     private UserRepository userRepository;
     private SessionFactory sessionFactory;
