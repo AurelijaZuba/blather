@@ -27,7 +27,7 @@ public class PostgressUserRepositoryShould {
     @Before
     public void setUp() throws Exception {
         flyway.migrate();
-        setSession();
+        configureSessionFactory();
         PostgresConnector connector = new PostgresConnector(sessionFactory);
         userRepository = new PostgresUserRepository(connector);
     }
@@ -70,7 +70,7 @@ public class PostgressUserRepositoryShould {
         assertThat(actualUser.get()).isNotSameAs(userWithSameName);
     }
 
-    private void setSession(){
+    private void configureSessionFactory(){
         Configuration configuration = new Configuration();
         configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
         configuration.setProperty("hibernate.connection.url", testDatabaseUrl);
