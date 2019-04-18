@@ -1,8 +1,11 @@
 package com.github.richardjwild.blather.persistence;
 
+import com.github.richardjwild.blather.Blather;
 import com.github.richardjwild.blather.user.User;
 import com.github.richardjwild.blather.user.UserModel;
 import com.github.richardjwild.blather.user.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -15,7 +18,6 @@ import java.util.Optional;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class PostgressUserRepositoryShould {
-
     String testDatabaseUrl = "jdbc:postgresql://localhost:5432/test";
     String testUser = "testuser";
     String password = "testPassword123";
