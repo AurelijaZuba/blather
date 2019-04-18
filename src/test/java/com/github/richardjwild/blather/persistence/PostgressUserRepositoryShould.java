@@ -1,11 +1,8 @@
 package com.github.richardjwild.blather.persistence;
 
-import com.github.richardjwild.blather.Blather;
 import com.github.richardjwild.blather.user.User;
 import com.github.richardjwild.blather.user.UserModel;
 import com.github.richardjwild.blather.user.UserRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.flywaydb.core.Flyway;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -82,7 +79,17 @@ public class PostgressUserRepositoryShould {
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         configuration.setProperty("show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        configuration.setProperty("hibernate.connection.provider_class", "org.hibernate.connection.C3P0ConnectionProvider");
+        configuration.setProperty("hibernate.c3p0.min_size", "7");
+        configuration.setProperty("hibernate.c3p0.maz_size", "53");
+        configuration.setProperty("hibernate.c3p0.timeout", "100");
+        configuration.setProperty("hibernate.c3p0.max_statements", "50");
+        configuration.setProperty("hibernate.c3p0.idle_test_period", "1000");
+        configuration.setProperty("hibernate.c3p0.validate", "true");
+        configuration.setProperty("hibernate.connection.provider_class", "org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider");
         configuration.addAnnotatedClass(UserModel.class);
         this.sessionFactory = configuration.buildSessionFactory();
     }
+
+
 }
