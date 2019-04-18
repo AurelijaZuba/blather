@@ -50,6 +50,7 @@ public class PostgresConnector {
         Session session = sessionFactory.openSession();
 
         Query query = generateFindUserQuery(name, session);
+        query.setCacheable(true);
         List foundUsers = query.list();
 
         if(foundUsers.size() == 1)

@@ -87,9 +87,14 @@ public class PostgressUserRepositoryShould {
         configuration.setProperty("hibernate.c3p0.idle_test_period", "1000");
         configuration.setProperty("hibernate.c3p0.validate", "true");
         configuration.setProperty("hibernate.connection.provider_class", "org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider");
+
+        configuration.setProperty("hibernate.cache.use_second_level_cache", "true");
+        configuration.setProperty("hibernate.cache.use_query_cache", "true");
+        configuration.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.jcache.JCacheRegionFactory");
+        configuration.setProperty("hibernate.javax.cache.provider", "org.ehcache.jsr107.EhcacheCachingProvider");
         configuration.addAnnotatedClass(UserModel.class);
         this.sessionFactory = configuration.buildSessionFactory();
     }
 
-
 }
+
